@@ -1,0 +1,18 @@
+{
+	"ch_1" 	: [{"dwell_time_s" : 5, "shot_count" : 10}],
+	"ch_2" 	: [{"dwell_time_s" : 5, "shot_count" : 10}],
+	"ch_3" 	: [{"dwell_time_s" : 5, "shot_count" : 10}],
+	"ch_4" 	: [{"dwell_time_s" : 5, "shot_count" : 10}],
+	"ch_5" 	: [{"dwell_time_s" : 5, "shot_count" : 10}],
+	"ch_6" 	: [{"dwell_time_s" : 5, "shot_count" : 10}],
+	"ch_7" 	: [{"dwell_time_s" : 5, "shot_count" : 10}],
+	"ch_8" 	: [{"dwell_time_s" : 5, "shot_count" : 10}],
+	"ch_9" 	: [{"dwell_time_s" : 5, "shot_count" : 10}],
+	"ch_10" : [{"dwell_time_s" : 5, "shot_count" : 10}],
+	"ch_11" : [{"dwell_time_s" : 5, "shot_count" : 10}],
+	"ch_12" : [{"dwell_time_s" : 5, "shot_count" : 10}],
+	"ch_13" : [{"dwell_time_s" : 5, "shot_count" : 10}],
+	"ch_14" : [{"dwell_time_s" : 5, "shot_count" : 10}],
+	"ch_15" : [{"dwell_time_s" : 5, "shot_count" : 10}],
+	"ch_16" : [{"dwell_time_s" : 5, "shot_count" : 10}]
+}

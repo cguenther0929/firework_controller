@@ -1,6 +1,8 @@
 # Firework Controller
 This repository contains the PC application for the firework controller.  Ultimately, this PC application in conjunction with the controller module (attached to the PC) will send and receive commands to the firework igniter.    
 
+A configuration file *.json will define pertinent parameters as they relate to fireworks.  
+
 * Python v3.8.0
 
 ## Development Environment
@@ -32,4 +34,4 @@ pip on Windows.
 
 
 ## Tagged Versions 
-* TBD
+* v1.0.0 -- This version, although very basic, is suitable to control a show.
