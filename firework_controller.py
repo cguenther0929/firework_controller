@@ -163,7 +163,7 @@ class SerialComm:
     def __init__(self, serial_baud_rate, serial_timeout_seconds):
         self.serial_port_stats = False
         
-        for i in range(12,256):
+        for i in range(3,256):
             try:
                 self.serial_port_num = i
                 self.serial_port_string = "COM" + str(self.serial_port_num)
@@ -226,7 +226,7 @@ if __name__ == '__main__':
     
     #TODO need to correct the baud rate
     #TODO BAUD should be 9600 for XBEE
-    comm = SerialComm(serial_baud_rate=57600, serial_timeout_seconds=2)
+    comm = SerialComm(serial_baud_rate=9600, serial_timeout_seconds=2)
     
     if(not comm.serial_port_stats):
         logging.info("Failed to open serial port.")
@@ -242,19 +242,14 @@ if __name__ == '__main__':
     #---------------------------------------------------------------#
     tx_array = bytearray([MESSAGE_SOF,MESSAGE_ID_FUSE_STATUS,0x00,MESSAGE_EOF])
     comm.send_message_to_panel(tx_array)
+    time.sleep(.1)
     bintoascii_data_str = comm.read_serial()
     _print_fuse_status(bintoascii_data_str)
     print("------------------------------------------------")
 
 
     
-    while(fuse_number != 16):
-
-        # print ("\n\nSelect an operation:")
-        # print (str(MESSAGE_ID_FUSE_STATUS)        , " -- to request fuse status.")
-        # print (str(MESSAGE_ID_IGNITE_FUSE)     , " -- to ignite a fuse.")
-
-        # print (str(99)                          , " -- Exit the application.")
+    while(fuse_number != 99):
 
         #---------------------------------------------------------------#
         # After dwell time, request fuse status 
@@ -266,9 +261,13 @@ if __name__ == '__main__':
         
         message_id = 0
         fuse_number = 0
-        # message_id = int(input("Enter the ID of the message (e.g. 0x01): "))
         while (fuse_number <=0 or fuse_number > 16):
             fuse_number = int(input("What Fuse Number Shall be Lit: "))
+            if(fuse_number == 99):  # User wishes to exit application
+                break
+
+        if(fuse_number == 99):  # User wishes to exit application
+            break
         
         _ignite_fuse(comm,fuse_number)
 
@@ -276,7 +275,6 @@ if __name__ == '__main__':
         # Determine the dwell time
         #---------------------------------------------------------------#
         channel_string = "ch_" + str(fuse_number)
-        # dwell_time = json_config_string([channel_string][0]["dwell_time_s"])
         dwell_time = json_config_string[channel_string][0]["dwell_time_s"]
         print("Dwell time is: ", dwell_time)
         # time.sleep(dwell_time)
@@ -285,72 +283,7 @@ if __name__ == '__main__':
             time.sleep(1)
             sys.stdout.flush()
             
-            
-            
-        
         print("\n----------------------------------------------------")
-
-                    
-
-
-
-        #---------------------------------------------------------------#
-        # Query the igniter for the fuse status
-        #---------------------------------------------------------------#
-        # if(message_id == MESSAGE_ID_FUSE_STATUS):  
-        #     logging.info("---------------------------------------------------")
-        #     logging.info("Requesting fuse status.")
-            
-        #     tx_array = bytearray([MESSAGE_SOF,MESSAGE_ID_FUSE_STATUS,0x00,MESSAGE_EOF])
-            
-        #     comm.send_message_to_panel(tx_array)
-            
-        #     logging.info("Command sent to igniter: " + str(binascii.b2a_hex(tx_array)))
-        #     print("Command sent to igniter: ", str(binascii.b2a_hex(tx_array)))
-
-        #     bintoascii_data_str = comm.read_serial()
-
-        #     _print_fuse_status(bintoascii_data_str)
-
-        #     logging.info("Response from igniter: " + bintoascii_data_str)
-        #     print("Response from igniter", bintoascii_data_str)
-            
-        
-        #---------------------------------------------------------------#
-        # Operation to ignite a fuse
-        #---------------------------------------------------------------#
-        # elif(message_id == MESSAGE_ID_IGNITE_FUSE):                                        
-        #     logging.info("---------------------------------------------------")
-        #     logging.info("Igniting fuse")
-            
-        #     fuse_value = 0
-        #     while (fuse_value <= 0 or fuse_value > 16):
-        #         fuse_value = int(input("   Enter fuse number to light (1 to 16): "))
-            
-        #     bcd_list = _bcd_of_value(fuse_value)
-
-        #     print("***DEBUG bcd list: ", bcd_list)
-
-        #     message_length = len(bcd_list)                      # Message length 
-
-        #     tx_array = bytearray([MESSAGE_SOF,MESSAGE_ID_IGNITE_FUSE,message_length,MESSAGE_EOF])
-
-        #     for i in range(0,len(bcd_list)):
-        #         tx_array.insert((3+i),bcd_list[i])
-
-
-        #     comm.send_message_to_panel(tx_array)
-        #     print("Command sent: ", str(binascii.b2a_hex(tx_array)))
-        #     logging.info("Command sent: " + str(binascii.b2a_hex(tx_array)))
-
-        #     bintoascii_data_str = comm.read_serial()
-            
-        #     logging.info("ACK Response: " + bintoascii_data_str)
-        #     print("ACK Response: ", bintoascii_data_str)
-
-        # else:
-        #     "Invalid selection."
-
 
     #---------------------------------------------------------------
     # CLOSE EVERYTHING DOWN

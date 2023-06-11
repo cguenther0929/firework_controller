@@ -35,3 +35,5 @@ pip on Windows.
 
 ## Tagged Versions 
 * v1.0.0 -- This version, although very basic, is suitable to control a show.
+
+* v1.0.1 -- Minor updates that allow the user to easily exit the application.  BAUD rate was changed to 9600. Successfully tested with XBee wireless controller and wireless igniter.  
