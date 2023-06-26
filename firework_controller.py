@@ -281,7 +281,7 @@ if __name__ == '__main__':
     parser.add_argument("--getcurrent", "-get", default=False, type=bool, nargs='?',
                    help="Request the igniter to report the fuse current setting.")
     
-    parser.add_argument('--version', "-v", action='version', version="%(prog)s 1.0.1")  
+    parser.add_argument('--version', "-v", action='version', version="%(prog)s 1.3.0")  
     
     args = parser.parse_args()
 
