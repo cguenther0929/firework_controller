@@ -39,3 +39,5 @@ pip on Windows.
 * v1.0.1 -- Minor updates that allow the user to easily exit the application.  BAUD rate was changed to 9600. Successfully tested with XBee wireless controller and wireless igniter.  
 
 * v1.2.0 -- Application now accepts --setcurrent and --getcurrent input arguments.  These arguments can be used to see or set the fuse-current value.  These features were successfully tested against the igniter.  
+
+* v1.3.0 -- Application has been updated to account for the fact that fuse status now comes across as four bytes instead of two.  

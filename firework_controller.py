@@ -75,37 +75,31 @@ FIVE_DIG_BIN_NUM_RE = re.compile("[0-1]{5}")
 #---------------------------------------------------------------
 def _print_fuse_status(message):
     user_friendy_fuse = []
-
-    value_index = 0
-
+    
     for i in range (4):
         if(i == 0):
+            for j in range (4):
+                current_bit = int((int(str(message[13]),16) >> (j)) & 0x01)
+                if(current_bit):
+                    user_friendy_fuse.append(((4*i)+j+1))
+
+        elif(i == 1):
+            for j in range (4):
+                current_bit = int((int(str(message[11]),16) >> (j)) & 0x01)
+                if(current_bit):
+                    user_friendy_fuse.append(((4*i)+j+1))
+        
+        elif(i == 2):
             for j in range (4):
                 current_bit = int((int(str(message[9]),16) >> (j)) & 0x01)
                 if(current_bit):
                     user_friendy_fuse.append(((4*i)+j+1))
-                value_index = value_index + 1
 
-        elif(i == 1):
-            for j in range (4):
-                current_bit = int((int(str(message[8]),16) >> (j)) & 0x01)
-                if(current_bit):
-                    user_friendy_fuse.append(((4*i)+j+1))
-                value_index = value_index + 1
-        
-        elif(i == 2):
+        elif(i == 3):
             for j in range (4):
                 current_bit = int((int(str(message[7]),16) >> (j)) & 0x01)
                 if(current_bit):
                     user_friendy_fuse.append(((4*i)+j+1))
-                value_index = value_index + 1
-
-        elif(i == 3):
-            for j in range (4):
-                current_bit = int((int(str(message[6]),16) >> (j)) & 0x01)
-                if(current_bit):
-                    user_friendy_fuse.append(((4*i)+j+1))
-                value_index = value_index + 1
 
     print("Valid Channels: ", user_friendy_fuse)
 
@@ -120,7 +114,6 @@ def _ignite_fuse(comm,fuse_number):
     
     bcd_list = _bcd_of_value(fuse_number)
 
-    # print("***DEBUG bcd list: ", bcd_list)
 
     message_length = len(bcd_list)                      # Message length 
 
@@ -338,10 +331,14 @@ if __name__ == '__main__':
     #---------------------------------------------------------------#
     # Indicate what the valid channels are
     #---------------------------------------------------------------#
+    print("------------------------------------------------")
+    print("Checking fuse status before launching.")
     tx_array = bytearray([MESSAGE_SOF,MESSAGE_ID_FUSE_STATUS,0x00,MESSAGE_EOF])
     comm.send_message_to_igniter(tx_array)
+    print("Command sent: ", str(binascii.b2a_hex(tx_array)))            
     time.sleep(.1)
     bintoascii_data_str = comm.read_serial()
+    print("Igniter response: ", bintoascii_data_str)
     _print_fuse_status(bintoascii_data_str)
     print("------------------------------------------------")
 
@@ -390,5 +387,5 @@ if __name__ == '__main__':
     logging.info("Application closing.")
     print("\n\n*******************************")
     print("===> Application closing.")
-    time.sleep(2)
+    time.sleep(1)
     _clear_screen() 
