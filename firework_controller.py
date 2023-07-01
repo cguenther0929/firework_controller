@@ -41,15 +41,6 @@ f.close()
 # json_data = json.load(f)
 # f.close()
 
-# TODO the following debug code can be deleted
-# print ("Here is the JSON config string: ")
-# print (json_config_string)
-
-# print ("Accessing specific member:")
-# print (json_config_string["ch_1"][0]["dwell_time_s"])
-
-# sys.exit(0)
-
 
 #---------------------------------------------------------------
 # Message ID Defines
@@ -281,7 +272,7 @@ if __name__ == '__main__':
     parser.add_argument("--getcurrent", "-get", default=False, type=bool, nargs='?',
                    help="Request the igniter to report the fuse current setting.")
     
-    parser.add_argument('--version', "-v", action='version', version="%(prog)s 1.3.0")  
+    parser.add_argument('--version', "-v", action='version', version="%(prog)s 1.3.1")  
     
     args = parser.parse_args()
 
@@ -352,19 +343,35 @@ if __name__ == '__main__':
         comm.send_message_to_igniter(tx_array)
         bintoascii_data_str = comm.read_serial()
         _print_fuse_status(bintoascii_data_str)
+        print("Enter 99 to exit the application...")
         
         message_id = 0
         fuse_number = 0
         while (fuse_number <=0 or fuse_number > 16):
-            fuse_number = int(input("What Fuse Number Shall be Lit: "))
+            try:
+                fuse_number = int(input("What Fuse Number Shall be Lit: "))
+            except:
+                print("You entered an invalid number.")
+            
             if(fuse_number == 99):  # User wishes to exit application
                 break
 
         if(fuse_number == 99):  # User wishes to exit application
             break
         
+        
+        _clear_screen()
         _ignite_fuse(comm,fuse_number)
 
+        #---------------------------------------------------------------#
+        # Artillery Statistics
+        #---------------------------------------------------------------#
+        print("----------------------------------------------------")
+        channel_string = "ch_" + str(fuse_number)
+        dwell_time = json_config_string[channel_string][0]["shot_count"]
+        battery_description = json_config_string[channel_string][0]["battery_description"]
+        print("Now Launching: ", battery_description, " -- containing [", dwell_time, "] shots")
+        
         #---------------------------------------------------------------#
         # Determine the dwell time
         #---------------------------------------------------------------#
@@ -377,6 +384,7 @@ if __name__ == '__main__':
             sys.stdout.flush()
             
         print("\n----------------------------------------------------")
+        
 
     #---------------------------------------------------------------
     # CLOSE EVERYTHING DOWN

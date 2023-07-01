@@ -41,3 +41,5 @@ pip on Windows.
 * v1.2.0 -- Application now accepts --setcurrent and --getcurrent input arguments.  These arguments can be used to see or set the fuse-current value.  These features were successfully tested against the igniter.  
 
 * v1.3.0 -- Application has been updated to account for the fact that fuse status now comes across as four bytes instead of two.  
+
+* v1.3.1 -- The application will no longer crash if an invalid fuse value is entered.  For example, if the user enters a non-integer character like 'a', it will be handled as an exception.  The battery description, as well as its shot count, is now displayed just after making a fuse selection.    
